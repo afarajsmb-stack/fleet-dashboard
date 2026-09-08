@@ -585,18 +585,31 @@ let RAW = [];
 let LANG = (localStorage.getItem('fleet-lang')==='en')?'en':'ar';
 
 // ====== Internationalization (Arabic / English) ======
+// ========================================================================
+//  دليل التعديل:  كل النصوص العربية والإنجليزية موجودة في هذا القسم.
+//  ----------------------------------------------------------------------
+//  القاعدة: غيّر فقط النص بين علامتي التنصيص '...' ولا تغيّر ما قبلها.
+//  مثال:  thMaker:{ar:'النوع',en:'Type'}  ←  غيّر 'النوع' فقط إلى ما تريد.
+//  بعد الحفظ سيظهر التغيير على موقعك خلال دقيقة تقريباً.
+// ========================================================================
 const I18N = {
+
+  // --- عنوان الموقع ونص البحث ---
   title:{ar:'لوحة تحكم الأسطول',en:'Fleet Dashboard'},
   subtitle:{ar:'إدارة المركبات والوثائق',en:'Fleet & Documents Management'},
   searchPh:{ar:'بحث برقم اللوحة أو السائق...',en:'Search by plate or driver...'},
   search:{ar:'بحث',en:'Search'},
   toggleTheme:{ar:'تبديل الوضع',en:'Toggle theme'},
   reload:{ar:'تحديث البيانات',en:'Reload data'},
+
+  // --- عناوين الرسوم البيانية ---
   chartMaker:{ar:'المركبات حسب النوع',en:'Vehicles by Type'},
   chartYear:{ar:'المركبات حسب الموديل',en:'Vehicles by Model'},
   chartStatus:{ar:'الحالة',en:'Status'},
   chartClass:{ar:'التصنيف',en:'Classification'},
   chartExp:{ar:'حالة الوثائق (تنتهي قريباً)',en:'Document Status (Expiring Soon)'},
+
+  // --- أزرار الفلاتر (كل المركبات، كل الموديلات...) ---
   allMakers:{ar:'كل المركبات',en:'All Vehicles'},
   allYears:{ar:'كل الموديلات',en:'All Models'},
   allStatuses:{ar:'كل الحالات',en:'All Statuses'},
@@ -605,12 +618,16 @@ const I18N = {
   allBranches:{ar:'كل الفروع',en:'All Branches'},
   allClasses:{ar:'كل التصنيفات',en:'All Classifications'},
   allDrivers:{ar:'كل السائقين',en:'All Drivers'},
+
+  // --- شاشة تسجيل الدخول ---
   authTitle:{ar:'تسجيل الدخول',en:'Sign In'},
   authSub:{ar:'لوحة تحكم الأسطول',en:'Fleet Control Dashboard'},
   authUser:{ar:'اسم المستخدم',en:'Username'},
   authPass:{ar:'كلمة المرور',en:'Password'},
   authLogin:{ar:'دخول',en:'Sign In'},
   authSetupMsg:{ar:'لم يتم تفعيل المصادقة بعد. فعّل Apps Script ورابطه في إعدادات الموقع.',en:'Auth not configured. Deploy the Apps Script and set its URL.'},
+
+  // --- الصلاحيات ولوحة إدارة المستخدمين ---
   roleMain:{ar:'رئيسي (الكل)',en:'Main (All)'},
   roleCombo:{ar:'مجمّع (SMB + SOS)',en:'Combo (SMB + SOS)'},
   roleSmb:{ar:'SMB فقط',en:'SMB only'},
@@ -623,20 +640,26 @@ const I18N = {
   adminDelete:{ar:'حذف',en:'Delete'},
   adminNewPass:{ar:'كلمة مرور جديدة',en:'New password'},
   logout:{ar:'خروج',en:'Logout'},
+
+  // --- فلاتر التحديد المتعدد ---
   allPriorities:{ar:'كل الأولويات',en:'All Priorities'},
   multiClear:{ar:'مسح',en:'Clear'},
   multiAll:{ar:'تحديد الكل',en:'Select All'},
   multiSelected:{ar:'محدد {n}',en:'{n} selected'},
+
+  // --- خيارات فلتر الأولوية ---
   priCritOpt:{ar:'حرجة (منتهية)',en:'Critical (Expired)'},
   priHighOpt:{ar:'عالية (≤30 يوم)',en:'High (≤30 days)'},
   priMedOpt:{ar:'متوسطة (31-60 يوم)',en:'Medium (31-60 days)'},
   priOkOpt:{ar:'سارية (>60 يوم)',en:'Valid (>60 days)'},
   reset:{ar:'إعادة تعيين',en:'Reset'},
+
+  // --- عناوين أعمدة الجدول ---
   thIdx:{ar:'#',en:'#'},
   thPlate:{ar:'رقم اللوحة',en:'Plate'},
-  thMaker:{ar:'النوع',en:'Type'},
-  thModel:{ar:'الطراز',en:'Model'},
-  thYear:{ar:'الموديل',en:'Year'},
+  thMaker:{ar:'النوع',en:'Type'},            // ← عمود "النوع"
+  thModel:{ar:'الطراز',en:'Model'},           // ← عمود "الطراز"
+  thYear:{ar:'الموديل',en:'Year'},            // ← عمود "الموديل" (سنة الإنتاج)
   thClass:{ar:'التصنيف',en:'Classification'},
   thDriver:{ar:'السائق',en:'Driver'},
   thInspection:{ar:'فحص دوري',en:'Inspection'},
@@ -649,21 +672,24 @@ const I18N = {
   thDriverCard:{ar:'بطاقة السائق',en:'Driver Card'},
   docDriverCard:{ar:'بطاقة السائق',en:'Driver Card'},
   thGroup:{ar:'المجموعة',en:'Group'},
-  // KPI
+
+  // --- بطاقات المؤشرات (KPI) ---
   kpiTotal:{ar:'إجمالي المركبات',en:'Total Vehicles'},
   kpiTotalSub:{ar:'في الأسطول',en:'In fleet'},
   kpiExpSoon:{ar:'وثائق تنتهي قريباً',en:'Expiring Soon'},
   kpiExpSoonSub:{ar:'خلال 60 يوم',en:'Within 60 days'},
   kpiExpired:{ar:'وثائق منتهية',en:'Expired Documents'},
   kpiExpiredSub:{ar:'بحاجة تجديد',en:'Needs renewal'},
-  // Status values (display translation)
+
+  // --- قيم الحالات (ترجمة ما يظهر في بطاقة الحالة) ---
   stWithDriver:{ar:'بسائق',en:'With Driver'},
   stNoDriver:{ar:'بدون سائق',en:'No Driver'},
   stMaintenance:{ar:'صيانة',en:'Maintenance'},
   stAccident:{ar:'حادث',en:'Accident'},
   stSale:{ar:'للبيع',en:'For Sale'},
-  stSaleOld:{ar:'للبيع',en:'For Sale'},
-  // Priority
+  stSaleOld:{ar:'للبيع',en:'For Sale'},  // ← اسم قديم موجود في البيانات، يُعرض أيضاً "للبيع"
+
+  // --- أولوية الوثائق (البطاقات الملونة) ---
   priCrit:{ar:'حرجة',en:'Critical'},
   priHigh:{ar:'عالية',en:'High'},
   priMedium:{ar:'متوسطة',en:'Medium'},
@@ -674,10 +700,10 @@ const I18N = {
   priOkDesc:{ar:'>60 يوم',en:'>60 days'},
   priExpired:{ar:'منتهية',en:'Expired'},
   priDaysSuffix:{ar:'ي',en:'d'},
-  // Priority section
   priTitle:{ar:'تنبيهات أولوية الوثائق',en:'Document Priority Alerts'},
   priHint:{ar:'انقر على بطاقة لتصفية المركبات حسب الأولوية',en:'Click a card to filter vehicles by priority'},
-  // Expiry
+
+  // --- فترات انتهاء الوثائق ---
   expExpired:{ar:'منتهية',en:'Expired'},
   expSoon:{ar:'≤60 يوم',en:'≤60 days'},
   expMid:{ar:'61-180 يوم',en:'61-180 days'},
@@ -687,21 +713,25 @@ const I18N = {
   docOpCard:{ar:'بطاقة التشغيل',en:'Operation Card'},
   docUnit:{ar:'وثيقة',en:'docs'},
   expValid:{ar:'سارية',en:'Valid'},
-  // Badges
+
+  // --- شارات العدد (أرقام صغيرة بجانب العناوين) ---
   badgeMaker:{ar:'نوع',en:'types'},
   badgeYear:{ar:'سنوات',en:'years'},
-  // Results
+
+  // --- نتائج العد ---
   results:{ar:'مركبة',en:'vehicles'},
   resultsShowing:{ar:'عرض',en:'Showing'},
   resultsOf:{ar:'من',en:'of'},
   emptyRow:{ar:'لا توجد نتائج مطابقة',en:'No matching results'},
-  // Export
+
+  // --- أزرار التصدير ---
   exportExcel:{ar:'تصدير Excel',en:'Export Excel'},
   exportPdf:{ar:'تصدير PDF',en:'Export PDF'},
   exportEmpty:{ar:'لا توجد بيانات للتصدير',en:'No data to export'},
   exportDateLabel:{ar:'تاريخ التصدير',en:'Export date'},
   exportRecordsLabel:{ar:'عدد السجلات',en:'Records'},
-  // Source
+
+  // --- مصدر البيانات ---
   srcLive:{ar:'Google Sheets',en:'Google Sheets'},
   srcLocal:{ar:'ملف محلي',en:'Local file'},
   srcFail:{ar:'تعذّر التحميل',en:'Load failed'},
